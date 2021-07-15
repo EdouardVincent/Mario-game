@@ -3,7 +3,7 @@
 #GitHub :EdouardVincent
 #Email : edouardvinc@protonmail.ch
 #Code sur GitHub : EdouardVincent/A-little-Mario-game-first-test
-#Ln = 441
+#Ln = 448
 
 import pygame
 from pygame.locals import*
@@ -36,19 +36,18 @@ texte = font.render("Objectif : NE PAS SE FAIRE TOUCHER PAR LES LASERS !",1,(255
 GameOver = font.render("GAME OVER !",1,(0,255,0))
 Play = font3.render("   JEU             MARIO",1,(255,255,255))
 Du = font3.render("      DU",1,(255,255,255))
-pygame.display.set_icon(pygame.image.load("icone.ico"))
-bouton_jouer = pygame.image.load("téléchargement (1).png")
-bouton_quitter = pygame.image.load("img_08_exit.png")
-Mario__normal__droite__image = pygame.image.load("Mario-normal-droite-_2_.gif")
-Mario__normal__gauche__image = pygame.image.load("Mario-normal-gauche-_2_.gif")
-Mario__saut__droit__image = pygame.image.load("Mario-saut-droit.gif")
-Mario__saut__gauche__image = pygame.image.load("Mario-saut-gauche.gif")
-laser__image = pygame.image.load("laser.png")
-brique = pygame.image.load("Brick_block.jpeg")
-Mario__mort__droite__image = pygame.image.load("Mario_mort_droite.gif")
-Mario__mort__gauche__image = pygame.image.load("mario_mort_gauche.gif")
-bg = pygame.image.load = pygame.image.load("586153.jpg.jpg")
-son = pygame.mixer.Sound("hotln.wav")
+pygame.display.set_icon(pygame.image.load("/home/pi/Téléchargements/icone.ico"))
+bouton_jouer = pygame.image.load("/home/pi/Téléchargements/téléchargement (1).png")
+bouton_quitter = pygame.image.load("/home/pi/Téléchargements/img_08_exit.png")
+Mario__normal__droite__image = pygame.image.load("/home/pi/Téléchargements/Mario-normal-droite-_2_.gif")
+Mario__normal__gauche__image = pygame.image.load("/home/pi/Téléchargements/Mario-normal-gauche-_2_.gif")
+Mario__saut__droit__image = pygame.image.load("/home/pi/Téléchargements/Mario-saut-droit.gif")
+Mario__saut__gauche__image = pygame.image.load("/home/pi/Téléchargements/Mario-saut-gauche.gif")
+laser__image = pygame.image.load("/home/pi/Téléchargements/laser.png")
+brique = pygame.image.load("/home/pi/Téléchargements/Brick_block.jpeg")
+Mario__mort__droite__image = pygame.image.load("/home/pi/Téléchargements/Mario_mort_droite.gif")
+Mario__mort__gauche__image = pygame.image.load("/home/pi/Téléchargements/mario_mort_gauche.gif")
+bg = pygame.image.load = pygame.image.load("/home/pi/Téléchargements/586153.jpg.jpg")
 
 #classes and functions#################################################
 
@@ -213,15 +212,12 @@ if menu == 1 :
                         
                         if tombee != '' :
                             direction = ""
-                
+                        
                     if Mario.pos_y < 660 and mario_brique1 == 1  and mario_brique2 == 0 :
                         direction="haut"
                         Mario.pos_x = Mario.calcul_deplacement_objet (Mario.pos_x, 25)
                         
-                    if Mario.pos_y < 560 and mario_brique2 == 0 and mario_brique1 == 0 and tombee != ''  :
-                        direction=""
-                        
-                    if Mario.pos_y < 660 and mario_brique1 == 1  and mario_brique2 == 0 :
+                    if Mario.pos_y < 560 and mario_brique2 == 1 and mario_brique1 == 0 :
                         direction="haut"
                         Mario.pos_x = Mario.calcul_deplacement_objet (Mario.pos_x, 25)
                         
@@ -281,10 +277,12 @@ if menu == 1 :
                         if Mario_rect.colliderect(Brique1_rect): 
                                 condition1=20
                                 mario_brique1=1
+                                mario_brique2 = 0
                                 
                         if Mario_rect.colliderect(Brique2_rect): 
                                 condition1=20
                                 mario_brique2=1
+                                mario_brique1= 0
                 
                         if Mario.pos_x <= 0 :
                             Mario.pos_x = Mario.calcul_deplacement_objet(Mario.pos_x, -2)
@@ -324,7 +322,13 @@ if menu == 1 :
            
                 if Mario_rect.collidepoint(Laser4.pos_x, Laser4.pos_y):
                     mort = 1
+                """
+                if mario_brique1 == 1 :
+                    mario_brique2 = 0
                     
+                if mario_brique2 == 1 :
+                    mario_brique1 = 0
+                """  
                 if mario_brique1 == 1 and mario_brique2 == 0 and Mario.pos_x > Brique1.pos_x+140 :
                     tombee = 'droite_brique1'
                     mario_brique1=0
@@ -372,6 +376,7 @@ if menu == 1 :
                         condition2=0
                         
                 if tombee == 'gauche_brique2' :
+                    
                     condition2=condition2+1
                     img = Mario__mort__gauche__image
                     Mario.pos_y = Mario.calcul_deplacement_objet(Mario.pos_y, 10)
@@ -414,7 +419,7 @@ if menu == 1 :
                     texte3 = font.render("Tu as tenu              secondes",1,(255,255,255))
                     fenetre.blit (texte3, (505,200))
                     fenetre.blit (texte2, (765,200))
-                    son.stop()
+                    #son.stop()
             
                     if condition3 >= 50 :
                         direction = ""
@@ -439,4 +444,3 @@ if menu == 1 :
                 Laser3.affichage_objet (laser__image,Laser3.pos_x,Laser3.pos_y)
                 Laser4.affichage_objet (laser__image,Laser4.pos_x,Laser4.pos_y)
                 pygame.display.flip()
-
