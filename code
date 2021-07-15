@@ -3,7 +3,7 @@
 #GitHub :EdouardVincent
 #Email : edouardvinc@protonmail.ch
 #Code sur GitHub : EdouardVincent/A-little-Mario-game-first-test
-#Ln = 448
+#Ln = 442
 
 import pygame
 from pygame.locals import*
@@ -25,6 +25,7 @@ mort = 0
 condition1=0
 condition2=0
 condition3=0
+condition4=0
 menu = 1
 partie=0
 
@@ -322,13 +323,7 @@ if menu == 1 :
            
                 if Mario_rect.collidepoint(Laser4.pos_x, Laser4.pos_y):
                     mort = 1
-                """
-                if mario_brique1 == 1 :
-                    mario_brique2 = 0
-                    
-                if mario_brique2 == 1 :
-                    mario_brique1 = 0
-                """  
+
                 if mario_brique1 == 1 and mario_brique2 == 0 and Mario.pos_x > Brique1.pos_x+140 :
                     tombee = 'droite_brique1'
                     mario_brique1=0
@@ -336,12 +331,12 @@ if menu == 1 :
                 if mario_brique1 == 1 and mario_brique2 == 0 and Mario.pos_x < Brique1.pos_x-95 :
                     tombee = 'gauche_brique1'
                     mario_brique1 = 0
-                
-                if mario_brique2 == 1 and mario_brique1 and Mario.pos_x > Brique2.pos_x+140 :
+                    
+                if mario_brique2 == 1 and mario_brique1 == 0 and Mario.pos_x > Brique2.pos_x+140 :
                     tombee = 'droite_brique2'
                     mario_brique2=0
                     
-                if mario_brique2 == 1 and mario_brique1 and Mario.pos_x < Brique2.pos_x-95 :
+                if mario_brique2 == 1 and mario_brique1 == 0 and Mario.pos_x < Brique2.pos_x-95 :
                     tombee = 'gauche_brique2'
                     mario_brique2 = 0
                 
@@ -366,25 +361,25 @@ if menu == 1 :
                         condition2=0
                         
                 if tombee == 'droite_brique2' :
-                    condition2=condition2+1
+                    condition4=condition4+1
                     img = Mario__mort__droite__image
                     Mario.pos_y = Mario.calcul_deplacement_objet(Mario.pos_y, 10)
             
-                    if condition2==10 :
+                    if condition4==10 :
                         img = Mario__normal__droite__image
                         tombee = ''
-                        condition2=0
+                        condition4=0
                         
                 if tombee == 'gauche_brique2' :
                     
-                    condition2=condition2+1
+                    condition4=condition4+1
                     img = Mario__mort__gauche__image
                     Mario.pos_y = Mario.calcul_deplacement_objet(Mario.pos_y, 10)
             
-                    if condition2== 10 :
+                    if condition4== 10 :
                         img = Mario__normal__gauche__image
                         tombee = ''
-                        condition2=0
+                        condition4=0
             
                 if Laser1.pos_x <= 0 : #Si le laser touche le coté gauche alors revenir de l'autre coté
                     Laser1.pos_x = 1700
@@ -428,6 +423,7 @@ if menu == 1 :
                         condition1 = 0
                         condition2 = 0
                         condition3 = 0
+                        condition4=0
                         mort = 0
                         time.sleep(3)
                         partie = 0
