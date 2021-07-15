@@ -3,7 +3,7 @@
 #GitHub :EdouardVincent
 #Email : edouardvinc@protonmail.ch
 #Code sur GitHub : EdouardVincent/A-little-Mario-game-first-test
-#Ln = 442
+#Ln = 460
 
 import pygame
 from pygame.locals import*
@@ -16,6 +16,7 @@ FPSCLOCK = pygame.time.Clock()
 FPSCLOCK.tick(FPS)
 
 #création de variables :
+saut_mario_brique1 = 0
 mario_brique1 = 0
 mario_brique2 = 0
 cote = "droite"
@@ -49,36 +50,70 @@ brique = pygame.image.load("Brick_block.jpeg")
 Mario__mort__droite__image = pygame.image.load("Mario_mort_droite.gif")
 Mario__mort__gauche__image = pygame.image.load("mario_mort_gauche.gif")
 bg = pygame.image.load = pygame.image.load("586153.jpg.jpg")
+img=Mario__normal__droite__image
 
 #classes and functions#################################################
 
-class objet () : 
+class joueur () : 
 
     def __init__ (self) :
         self.pos_x = 0
+        self.pos_y = 760
+        self.image = img
+        self.increment_horizontal = 20
+        self.increment_vertical = 10
+
+    def affichage (self) :
+        fenetre.blit(self.image, (self.pos_x, self.pos_y))
+
+    def calcul_deplacement_droite (self) :
+        self.pos_x+=self.increment_horizontal
+        
+    def calcul_deplacement_gauche (self) :
+        self.pos_x-=self.increment_horizontal
+        
+    def calcul_deplacement_haut (self) :
+        self.pos_y-=self.increment_vertical
+        
+    def calcul_deplacement_bas (self) :
+        self.pos_y+=self.increment_vertical
+        
+class Plateforme () :
+    def __init__ (self) :
+        self.pos_x = 0
         self.pos_y = 0
-
-    def affichage_objet (self, image, x, y) :
-        fenetre.blit(image, (x, y))
-
-    def calcul_deplacement_objet (self, x_ou_y_origine, increment) :
-        return x_ou_y_origine+increment
+        self.image = brique
+        self.rect = self.image.get_rect(topleft = (self.pos_x, self.pos_y-38))
+        
+    def affichage (self) :
+        fenetre.blit(self.image, (self.pos_x, self.pos_y))
     
+class Laser () :
+    def __init__ (self) :
+        self.pos_x = 0
+        self.pos_y = 0
+        self.image = laser__image 
+        self.increment = 5
+        
+    def affichage (self) :
+        fenetre.blit(self.image, (self.pos_x, self.pos_y))
+        
+    def calcul_deplacement_gauche (self) :
+        self.pos_x -= self.increment
+        
 def terminate() :
     pygame.quit()
     sys.exit()
 
 ################################################################################
 
-Laser1 = objet() #instanciation 
-Laser2 = objet() #instanciation 
-Laser3 = objet() #instanciation 
-Laser4 = objet() #instanciation 
-Mario = objet()
-Brique1 = objet()
-Brique2 = objet()
-bouton1 = objet()
-bouton2 = objet()
+Laser1 = Laser() #instanciation 
+Laser2 = Laser() #instanciation 
+Laser3 = Laser() #instanciation 
+Laser4 = Laser() #instanciation 
+Mario = joueur()
+Brique1 = Plateforme()
+Brique2 = Plateforme()
 
 start_ticks=pygame.time.get_ticks()
 seconds=(pygame.time.get_ticks()-start_ticks)
@@ -89,31 +124,31 @@ if menu == 1 :
         
         Laser1.pos_x = 1600 #bas
         Laser1.pos_y = 810
+        Laser1.image = laser__image
 
         Laser2.pos_x = 800
         Laser2.pos_y = 810
+        Laser2.image = laser__image
 
         Laser3.pos_x = 1200 #haut
         Laser3.pos_y = 650
+        Laser3.image = laser__image
 
         Laser4.pos_x = 400
         Laser4.pos_y = 650
+        Laser4.image = laser__image
 
         Mario.pos_x = 0
         Mario.pos_y = 760
 
         Brique1.pos_x = 490
         Brique1.pos_y = 799
+        Brique1.image = brique
         
         Brique2.pos_x = 590
         Brique2.pos_y = 700
+        Brique2.image = brique
 
-        bouton1.pos_x = 715
-        bouton1.pos_y = 100
-
-        bouton2.pos_x = 780
-        bouton2.pos_y = 300
-        
         pygame.display.set_caption('Menu')
     
         for event in pygame.event.get():
@@ -127,8 +162,8 @@ if menu == 1 :
             
             if event.type == MOUSEBUTTONDOWN and event.button == 1:
             
-                jouer = bouton_jouer.get_rect(topleft = (bouton1.pos_x, bouton1.pos_y))
-                quitter = bouton_quitter.get_rect(topleft = (bouton2.pos_x, bouton2.pos_y))
+                jouer = bouton_jouer.get_rect(topleft = (715, 100))
+                quitter = bouton_quitter.get_rect(topleft = (780, 300))
             
                 if jouer.collidepoint(event.pos) :
                     menu = 0
@@ -138,26 +173,24 @@ if menu == 1 :
                     terminate()
                     
         fenetre = pygame.display.set_mode((1700,1000))
-        bouton1.affichage_objet(bouton_jouer, bouton1.pos_x, bouton1.pos_y)
-        bouton2.affichage_objet(bouton_quitter, bouton2.pos_x, bouton2.pos_y)
-        Mario.affichage_objet(Mario__normal__droite__image, 800, Mario.pos_y)
-        Mario.affichage_objet(Mario__saut__droit__image, 0, Mario.pos_y)
-        Mario.affichage_objet(Mario__saut__gauche__image, 1590, Mario.pos_y)
+        fenetre.blit(bouton_jouer,(715, 100))
+        fenetre.blit(bouton_quitter,(780, 300))
         fenetre.blit(Play,(170,760))
-        fenetre.blit(Du,(520,600))
+        fenetre.blit(Du,(520,760))
         pygame.display.flip()
         
         if partie == 1 :
             
+            Mario.image = Mario__normal__droite__image
             pygame.display.set_caption('Mario Niveau 1')
             fenetre.blit(bg, (-100, -100))
             fenetre.blit (texte, (0,0))
-            Mario.affichage_objet (Mario__normal__droite__image, Mario.pos_x, Mario.pos_y)
+            Mario.affichage ()
             pygame.display.flip()
             time.sleep(2)
             pygame.key.set_repeat(1,20)
             partie = 1
-            img = Mario__normal__droite__image
+
             while True :
                 
                 seconds=(pygame.time.get_ticks()-start_ticks)/1000
@@ -186,142 +219,126 @@ if menu == 1 :
                         if event.key == K_ESCAPE:
                             terminate()
                 
-                Laser1.pos_x = Laser1.calcul_deplacement_objet (Laser1.pos_x, -10)
-                Laser2.pos_x = Laser2.calcul_deplacement_objet (Laser2.pos_x, -10)
-                Laser3.pos_x = Laser3.calcul_deplacement_objet (Laser3.pos_x, -10)
-                Laser4.pos_x = Laser4.calcul_deplacement_objet (Laser4.pos_x, -10)
-        
-                Mario_rect = img.get_rect(topleft = (Mario.pos_x, Mario.pos_y))
-                Brique1_rect = brique.get_rect(topleft = (Brique1.pos_x, Brique1.pos_y-38))
-                Brique2_rect = brique.get_rect(topleft = (Brique2.pos_x, Brique2.pos_y-38))
+                Laser1.calcul_deplacement_gauche ()
+                Laser2.calcul_deplacement_gauche ()
+                Laser3.calcul_deplacement_gauche ()
+                Laser4.calcul_deplacement_gauche ()
                 
-                Laser1_rect = laser__image.get_rect(topleft = (Laser1.pos_x, Laser1.pos_y))
-                Laser2_rect = laser__image.get_rect(topleft = (Laser2.pos_x, Laser2.pos_y))
-                Laser3_rect = laser__image.get_rect(topleft = (Laser3.pos_x, Laser3.pos_y))
-                Laser4_rect = laser__image.get_rect(topleft = (Laser2.pos_x, Laser4.pos_y))
-        
+                Mario.rect = img.get_rect(topleft = (Mario.pos_x, Mario.pos_y))
+                Brique1.rect = brique.get_rect(topleft = (Brique1.pos_x, Brique1.pos_y-18))
+                Brique2.rect = brique.get_rect(topleft = (Brique2.pos_x, Brique2.pos_y-18))
+  
                 if direction == "gauche" :
+                    if mort == 1 :
+                        direction = ""
+                        
                     if Mario.pos_x == 0 :
-                        Mario.pos_x = Mario.calcul_deplacement_objet (Mario.pos_x, 25)
-                    Mario.pos_x = Mario.calcul_deplacement_objet (Mario.pos_x, -25)
-                    img = Mario__normal__gauche__image
+                        Mario.calcul_deplacement_droite()
+                    Mario.calcul_deplacement_gauche()
+                    Mario.image = Mario__normal__gauche__image
                     direction = ""
             
                     if Mario.pos_y < 760 and mario_brique1 == 0 and mario_brique2 == 0 :
                         direction="haut"
-                        Mario.pos_x = Mario.calcul_deplacement_objet (Mario.pos_x, 25)
+                        Mario.calcul_deplacement_droite()
                         
                         if tombee != '' :
                             direction = ""
                         
                     if Mario.pos_y < 660 and mario_brique1 == 1  and mario_brique2 == 0 :
                         direction="haut"
-                        Mario.pos_x = Mario.calcul_deplacement_objet (Mario.pos_x, 25)
+                        Mario.calcul_deplacement_droite ()
                         
                     if Mario.pos_y < 560 and mario_brique2 == 1 and mario_brique1 == 0 :
                         direction="haut"
-                        Mario.pos_x = Mario.calcul_deplacement_objet (Mario.pos_x, 25)
+                        Mario.calcul_deplacement_droite ()
                         
                         if tombee != '' :
                             direction = ""
                 
                 if direction == "droite" :
+                    if mort == 1 :
+                        direction = ""
+                    
                     if Mario.pos_x == 1690 :
-                        Mario.pos_x = Mario.calcul_deplacement_objet (Mario.pos_x, -25)
-                    Mario.pos_x = Mario.calcul_deplacement_objet (Mario.pos_x, 25)
-                    img = Mario__normal__droite__image
+                        Mario.calcul_deplacement_gauche ()
+                    Mario.calcul_deplacement_droite()
+                    Mario.image = Mario__normal__droite__image
                     direction = ""
             
                     if Mario.pos_y < 760 and mario_brique1 == 0 and mario_brique2 == 0 :
                         direction="haut"
-                        Mario.pos_x = Mario.calcul_deplacement_objet (Mario.pos_x, -25)
+                        Mario.calcul_deplacement_gauche()
                         
                         if tombee != '' :
                             direction = ""
                         
                     if Mario.pos_y < 660 and mario_brique1 == 1 and mario_brique2 == 0 :
                         direction="haut"
-                        Mario.pos_x = Mario.calcul_deplacement_objet (Mario.pos_x, -25)
+                        Mario.calcul_deplacement_gauche()
                         
                     if Mario.pos_y < 560 and mario_brique2 == 1 and mario_brique1 == 0 :
                         direction="haut"
-                        Mario.pos_x = Mario.calcul_deplacement_objet (Mario.pos_x, -25)
+                        Mario.calcul_deplacement_gauche()
                         
                         if tombee != '' :
                             direction = ""
                         
                 if direction == "haut":
+                    if mort == 1 :
+                        direction = ""
+                        
                     condition1=condition1+1
     
-                    if condition1 < 10.1 :#calcul de la montée du Mario
-                
-                        if Mario.pos_x <= 0 :
-                            Mario.pos_x = Mario.calcul_deplacement_objet(Mario.pos_x, -2)
-                    
-                        if Mario.pos_x >= 1805 :
-                            Mario.pos_x = Mario.calcul_deplacement_objet(Mario.pos_x, -2)
-                
+                    if condition1 < 20.2 :#calcul de la montée du Mario
+                        Mario.calcul_deplacement_haut()
                         if cote == "droite" :
-                
-                            Mario.pos_x = Mario.calcul_deplacement_objet(Mario.pos_x, 2)
-                            Mario.pos_y = Mario.calcul_deplacement_objet(Mario.pos_y, -25)
-                            img = Mario__saut__droit__image
+                            Mario.image = Mario__saut__droit__image
    
                         if cote == "gauche" :
-                            Mario.pos_x = Mario.calcul_deplacement_objet(Mario.pos_x, -2)
-                            Mario.pos_y = Mario.calcul_deplacement_objet(Mario.pos_y, -25)
-                            img = Mario__saut__gauche__image
+                            Mario.image = Mario__saut__gauche__image
                       
+                    if condition1 > 20 :#calcul de la descente du Mario
+                        Mario.calcul_deplacement_bas()
                 
-                    if condition1 > 10 :#calcul de la descente du Mario
-                
-                        if Mario_rect.colliderect(Brique1_rect): 
-                                condition1=20
-                                mario_brique1=1
-                                mario_brique2 = 0
+                        if Mario.rect.colliderect(Brique1.rect):
+                            saut_mario_brique1 = 1
+                            condition1=40
+                            mario_brique1=1
+                            mario_brique2 = 0
                                 
-                        if Mario_rect.colliderect(Brique2_rect): 
-                                condition1=20
-                                mario_brique2=1
-                                mario_brique1= 0
-                
-                        if Mario.pos_x <= 0 :
-                            Mario.pos_x = Mario.calcul_deplacement_objet(Mario.pos_x, -2)
-                    
-                        if Mario.pos_x >= 1805 :
-                            Mario.pos_x = Mario.calcul_deplacement_objet(Mario.pos_x, 2)
+                        if Mario.rect.colliderect(Brique2.rect): 
+                            condition1=40
+                            mario_brique2=1
+                            mario_brique1= 0
                 
                         if cote == "droite" :
+                            Mario.image = Mario__saut__droit__image
                         
-                            Mario.pos_x = Mario.calcul_deplacement_objet(Mario.pos_x,2)
-                            Mario.pos_y = Mario.calcul_deplacement_objet(Mario.pos_y, 25)
-                            img = Mario__saut__droit__image
-                        
-                            if condition1 >= 20 :
+                            if condition1 >= 40 :
                                 direction = ""
                                 condition1=0
-                                img = Mario__normal__droite__image
+                                Mario.image = Mario__normal__droite__image
                           
                         if cote == "gauche" :
-                            Mario.pos_x = Mario.calcul_deplacement_objet(Mario.pos_x, -2)
-                            Mario.pos_y = Mario.calcul_deplacement_objet(Mario.pos_y, 25)
-                            img = Mario__saut__gauche__image
+                            Mario.image = Mario__saut__gauche__image
                  
-                            if condition1 >= 20 :
+                            if condition1 >= 40 :
                                 direction = ""
                                 condition1=0
-                                img = Mario__normal__gauche__image
+                                Mario.image = Mario__normal__gauche__image
+                                
 
-                if Mario_rect.collidepoint(Laser1.pos_x, Laser1.pos_y):
+                if Mario.rect.collidepoint(Laser1.pos_x, Laser1.pos_y):
                     mort = 1
 
-                if Mario_rect.collidepoint(Laser2.pos_x, Laser2.pos_y):
+                if Mario.rect.collidepoint(Laser2.pos_x, Laser2.pos_y):
                     mort = 1
 
-                if Mario_rect.collidepoint(Laser3.pos_x, Laser3.pos_y):
+                if Mario.rect.collidepoint(Laser3.pos_x, Laser3.pos_y):
                     mort = 1
            
-                if Mario_rect.collidepoint(Laser4.pos_x, Laser4.pos_y):
+                if Mario.rect.collidepoint(Laser4.pos_x, Laser4.pos_y):
                     mort = 1
 
                 if mario_brique1 == 1 and mario_brique2 == 0 and Mario.pos_x > Brique1.pos_x+140 :
@@ -342,44 +359,45 @@ if menu == 1 :
                 
                 if tombee == 'droite_brique1' :
                     condition2=condition2+1
-                    img = Mario__mort__droite__image
-                    Mario.pos_y = Mario.calcul_deplacement_objet(Mario.pos_y, 10)
+                    Mario.image = Mario__mort__droite__image
+                    Mario.calcul_deplacement_bas()
             
                     if condition2==10 :
-                        img = Mario__normal__droite__image
+                        Mario.image = Mario__normal__droite__image
                         tombee = ''
                         condition2=0
         
                 if tombee == 'gauche_brique1' :
                     condition2=condition2+1
-                    img = Mario__mort__gauche__image
-                    Mario.pos_y = Mario.calcul_deplacement_objet(Mario.pos_y, 10)
+                    Mario.image = Mario__mort__gauche__image
+                    Mario.calcul_deplacement_bas()
             
                     if condition2== 10 :
-                        img = Mario__normal__gauche__image
+                        Mario.image = Mario__normal__gauche__image
                         tombee = ''
                         condition2=0
                         
                 if tombee == 'droite_brique2' :
                     condition4=condition4+1
-                    img = Mario__mort__droite__image
-                    Mario.pos_y = Mario.calcul_deplacement_objet(Mario.pos_y, 10)
+                    Mario.image = Mario__mort__droite__image
+                    Mario.calcul_deplacement_bas()
             
                     if condition4==10 :
-                        img = Mario__normal__droite__image
+                        Mario.image = Mario__normal__droite__image
                         tombee = ''
                         condition4=0
                         
                 if tombee == 'gauche_brique2' :
-                    
+                    print("bonjour")
                     condition4=condition4+1
-                    img = Mario__mort__gauche__image
-                    Mario.pos_y = Mario.calcul_deplacement_objet(Mario.pos_y, 10)
+                    Mario.image = Mario__mort__gauche__image
+                    Mario.calcul_deplacement_bas()
             
                     if condition4== 10 :
-                        img = Mario__normal__gauche__image
+                        Mario.image = Mario__normal__gauche__image
                         tombee = ''
                         condition4=0
+                        mario_brique1 = 1
             
                 if Laser1.pos_x <= 0 : #Si le laser touche le coté gauche alors revenir de l'autre coté
                     Laser1.pos_x = 1700
@@ -398,13 +416,13 @@ if menu == 1 :
                 
                     menu=1
                     condition3=condition3+1
-                    Mario.pos_y=Mario.calcul_deplacement_objet(Mario.pos_y, 1)
+                    Mario.calcul_deplacement_bas()
         
-                    if img == Mario__normal__droite__image :
-                        img = Mario__mort__droite__image
+                    if Mario.image == Mario__normal__droite__image :
+                        Mario.image = Mario__mort__droite__image
             
-                    if img == Mario__normal__gauche__image :
-                        img = Mario__mort__gauche__image
+                    if Mario.image == Mario__normal__gauche__image :
+                        Mario.image = Mario__mort__gauche__image
            
                     direction = ""
                     fenetre.blit (GameOver, (650,100))
@@ -432,11 +450,11 @@ if menu == 1 :
                         menu = 1
                         
                 fenetre.blit(bg, (-100,-100))#à la fin, on affiche tout dans le but d'avoit plusieurs instances à afficher en meme temps
-                Brique2.affichage_objet (brique, Brique2.pos_x, Brique2.pos_y)
-                Brique1.affichage_objet (brique, Brique1.pos_x, Brique1.pos_y)
-                Mario.affichage_objet (img, Mario.pos_x, Mario.pos_y)
-                Laser1.affichage_objet (laser__image,Laser1.pos_x,Laser1.pos_y)
-                Laser2.affichage_objet (laser__image,Laser2.pos_x,Laser2.pos_y)
-                Laser3.affichage_objet (laser__image,Laser3.pos_x,Laser3.pos_y)
-                Laser4.affichage_objet (laser__image,Laser4.pos_x,Laser4.pos_y)
+                Brique2.affichage ()
+                Brique1.affichage ()
+                Mario.affichage ()
+                Laser1.affichage ()
+                Laser2.affichage ()
+                Laser3.affichage ()
+                Laser4.affichage ()
                 pygame.display.flip()
