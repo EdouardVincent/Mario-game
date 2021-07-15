@@ -382,7 +382,7 @@ if menu == 1 :
                     Mario.image = Mario__mort__droite__image
                     Mario.calcul_deplacement_bas()
             
-                    if condition4==10 :
+                    if condition4==20 :
                         Mario.image = Mario__normal__droite__image
                         tombee = ''
                         condition4=0
