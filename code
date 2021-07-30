@@ -3,7 +3,7 @@
 #GitHub :EdouardVincent
 #Email : edouardvinc@protonmail.ch
 #Code sur GitHub : EdouardVincent/A-little-Mario-game-first-test
-#Ln = 460
+#Ln = 462
 
 import pygame
 from pygame.locals import*
@@ -38,18 +38,18 @@ texte = font.render("Objectif : NE PAS SE FAIRE TOUCHER PAR LES LASERS !",1,(255
 GameOver = font.render("GAME OVER !",1,(0,255,0))
 Play = font3.render("   JEU             MARIO",1,(255,255,255))
 Du = font3.render("      DU",1,(255,255,255))
-pygame.display.set_icon(pygame.image.load("icone.ico"))
-bouton_jouer = pygame.image.load("téléchargement (1).png")
-bouton_quitter = pygame.image.load("img_08_exit.png")
-Mario__normal__droite__image = pygame.image.load("Mario-normal-droite-_2_.gif")
-Mario__normal__gauche__image = pygame.image.load("Mario-normal-gauche-_2_.gif")
-Mario__saut__droit__image = pygame.image.load("Mario-saut-droit.gif")
-Mario__saut__gauche__image = pygame.image.load("Mario-saut-gauche.gif")
-laser__image = pygame.image.load("laser.png")
-brique = pygame.image.load("Brick_block.jpeg")
-Mario__mort__droite__image = pygame.image.load("Mario_mort_droite.gif")
-Mario__mort__gauche__image = pygame.image.load("mario_mort_gauche.gif")
-bg = pygame.image.load = pygame.image.load("586153.jpg.jpg")
+pygame.display.set_icon(pygame.image.load("C:\Jeu personnages\icone.ico"))
+bouton_jouer = pygame.image.load("C:\Jeu personnages\OIP (12).png")
+bouton_quitter = pygame.image.load("C:\Jeu personnages\OIP (14).png")
+Mario__normal__droite__image = pygame.image.load("C:\Jeu personnages\Mario-normal-droite-_2_.gif")
+Mario__normal__gauche__image = pygame.image.load("C:\Jeu personnages\Mario-normal-gauche-_2_.gif")
+Mario__saut__droit__image = pygame.image.load("C:\Jeu personnages\Mario-saut-droit.gif")
+Mario__saut__gauche__image = pygame.image.load("C:\Jeu personnages\Mario-saut-gauche.gif")
+laser__image = pygame.image.load("C:\Jeu personnages\laser.png")
+brique = pygame.image.load("C:\Jeu personnages\Brick_block.png")
+Mario__mort__droite__image = pygame.image.load("C:\Jeu personnages\Mario_mort_droite.gif")
+Mario__mort__gauche__image = pygame.image.load("C:\Jeu personnages\mario_mort_gauche.gif")
+bg = pygame.image.load = pygame.image.load("C:\Jeu personnages\OIP (1).jpg")
 img=Mario__normal__droite__image
 
 #classes and functions#################################################
@@ -118,6 +118,8 @@ Brique2 = Plateforme()
 start_ticks=pygame.time.get_ticks()
 seconds=(pygame.time.get_ticks()-start_ticks)
 
+pygame.key.set_repeat(1,20)
+
 if menu == 1 :
     
     while menu: # boucle principale
@@ -163,7 +165,7 @@ if menu == 1 :
             if event.type == MOUSEBUTTONDOWN and event.button == 1:
             
                 jouer = bouton_jouer.get_rect(topleft = (715, 100))
-                quitter = bouton_quitter.get_rect(topleft = (780, 300))
+                quitter = bouton_quitter.get_rect(topleft = (715, 300))
             
                 if jouer.collidepoint(event.pos) :
                     menu = 0
@@ -174,7 +176,7 @@ if menu == 1 :
                     
         fenetre = pygame.display.set_mode((1700,1000))
         fenetre.blit(bouton_jouer,(715, 100))
-        fenetre.blit(bouton_quitter,(780, 300))
+        fenetre.blit(bouton_quitter,(715, 300))
         fenetre.blit(Play,(170,760))
         fenetre.blit(Du,(520,760))
         pygame.display.flip()
@@ -458,3 +460,4 @@ if menu == 1 :
                 Laser3.affichage ()
                 Laser4.affichage ()
                 pygame.display.flip()
+
